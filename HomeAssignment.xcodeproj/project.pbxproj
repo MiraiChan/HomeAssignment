@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		01E34C252E21821F003CB0D4 /* IMGLYUI in Frameworks */ = {isa = PBXBuildFile; productRef = 01E34C242E21821F003CB0D4 /* IMGLYUI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		01E34BE42E1FE66B003CB0D4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,17 +25,46 @@
 			remoteGlobalIDString = 01E34BD52E1FE669003CB0D4;
 			remoteInfo = HomeAssignment;
 		};
+		01E386902E228206003CB0D4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 01E34BCE2E1FE669003CB0D4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 01E35E312E2273E1003CB0D4;
+			remoteInfo = IMGLYAssets;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		01E34BD62E1FE669003CB0D4 /* HomeAssignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeAssignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01E34BE32E1FE66B003CB0D4 /* HomeAssignmentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HomeAssignmentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01E34BED2E1FE66B003CB0D4 /* HomeAssignmentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HomeAssignmentUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		01E35E322E2273E1003CB0D4 /* IMGLYAssets.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IMGLYAssets.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		01E3868F2E227F89003CB0D4 /* Exceptions for "HomeAssignment" folder in "IMGLYAssets" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				IMGLYAssets.bundle,
+			);
+			target = 01E35E312E2273E1003CB0D4 /* IMGLYAssets */;
+		};
+		01E386962E22A3DC003CB0D4 /* Exceptions for "HomeAssignment" folder in "HomeAssignment" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 01E34BD52E1FE669003CB0D4 /* HomeAssignment */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		01E34BD82E1FE669003CB0D4 /* HomeAssignment */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				01E386962E22A3DC003CB0D4 /* Exceptions for "HomeAssignment" folder in "HomeAssignment" target */,
+				01E3868F2E227F89003CB0D4 /* Exceptions for "HomeAssignment" folder in "IMGLYAssets" target */,
+			);
 			path = HomeAssignment;
 			sourceTree = "<group>";
 		};
@@ -52,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01E34C252E21821F003CB0D4 /* IMGLYUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +97,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		01E34BEA2E1FE66B003CB0D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		01E35E2F2E2273E1003CB0D4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -88,6 +129,7 @@
 				01E34BD62E1FE669003CB0D4 /* HomeAssignment.app */,
 				01E34BE32E1FE66B003CB0D4 /* HomeAssignmentTests.xctest */,
 				01E34BED2E1FE66B003CB0D4 /* HomeAssignmentUITests.xctest */,
+				01E35E322E2273E1003CB0D4 /* IMGLYAssets.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -106,12 +148,14 @@
 			buildRules = (
 			);
 			dependencies = (
+				01E386912E228206003CB0D4 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				01E34BD82E1FE669003CB0D4 /* HomeAssignment */,
 			);
 			name = HomeAssignment;
 			packageProductDependencies = (
+				01E34C242E21821F003CB0D4 /* IMGLYUI */,
 			);
 			productName = HomeAssignment;
 			productReference = 01E34BD62E1FE669003CB0D4 /* HomeAssignment.app */;
@@ -163,6 +207,25 @@
 			productReference = 01E34BED2E1FE66B003CB0D4 /* HomeAssignmentUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		01E35E312E2273E1003CB0D4 /* IMGLYAssets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 01E35E332E2273E1003CB0D4 /* Build configuration list for PBXNativeTarget "IMGLYAssets" */;
+			buildPhases = (
+				01E35E2E2E2273E1003CB0D4 /* Sources */,
+				01E35E2F2E2273E1003CB0D4 /* Frameworks */,
+				01E35E302E2273E1003CB0D4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IMGLYAssets;
+			packageProductDependencies = (
+			);
+			productName = IMGLYAssets;
+			productReference = 01E35E322E2273E1003CB0D4 /* IMGLYAssets.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,6 +247,9 @@
 						CreatedOnToolsVersion = 16.3;
 						TestTargetID = 01E34BD52E1FE669003CB0D4;
 					};
+					01E35E312E2273E1003CB0D4 = {
+						CreatedOnToolsVersion = 16.3;
+					};
 				};
 			};
 			buildConfigurationList = 01E34BD12E1FE669003CB0D4 /* Build configuration list for PBXProject "HomeAssignment" */;
@@ -195,6 +261,9 @@
 			);
 			mainGroup = 01E34BCD2E1FE669003CB0D4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				01E34C232E21821F003CB0D4 /* XCRemoteSwiftPackageReference "IMGLYUI-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 01E34BD72E1FE669003CB0D4 /* Products */;
 			projectDirPath = "";
@@ -203,6 +272,7 @@
 				01E34BD52E1FE669003CB0D4 /* HomeAssignment */,
 				01E34BE22E1FE66B003CB0D4 /* HomeAssignmentTests */,
 				01E34BEC2E1FE66B003CB0D4 /* HomeAssignmentUITests */,
+				01E35E312E2273E1003CB0D4 /* IMGLYAssets */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +293,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		01E34BEB2E1FE66B003CB0D4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		01E35E302E2273E1003CB0D4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +330,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		01E35E2E2E2273E1003CB0D4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +349,11 @@
 			isa = PBXTargetDependency;
 			target = 01E34BD52E1FE669003CB0D4 /* HomeAssignment */;
 			targetProxy = 01E34BEE2E1FE66B003CB0D4 /* PBXContainerItemProxy */;
+		};
+		01E386912E228206003CB0D4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 01E35E312E2273E1003CB0D4 /* IMGLYAssets */;
+			targetProxy = 01E386902E228206003CB0D4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -400,11 +489,15 @@
 				DEVELOPMENT_TEAM = RLCVQ32K8A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HomeAssignment/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "The application needs access to save edited images to a photo gallery.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -412,9 +505,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = AlmiraKhafizova.HomeAssignment;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -428,11 +525,15 @@
 				DEVELOPMENT_TEAM = RLCVQ32K8A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HomeAssignment/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "The application needs access to save edited images to a photo gallery.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -440,9 +541,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = AlmiraKhafizova.HomeAssignment;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -518,6 +623,50 @@
 			};
 			name = Release;
 		};
+		01E35E342E2273E1003CB0D4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RLCVQ32K8A;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AlmiraKhafizova.IMGLYAssets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		01E35E352E2273E1003CB0D4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RLCVQ32K8A;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = AlmiraKhafizova.IMGLYAssets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -557,7 +706,35 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		01E35E332E2273E1003CB0D4 /* Build configuration list for PBXNativeTarget "IMGLYAssets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01E35E342E2273E1003CB0D4 /* Debug */,
+				01E35E352E2273E1003CB0D4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		01E34C232E21821F003CB0D4 /* XCRemoteSwiftPackageReference "IMGLYUI-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/imgly/IMGLYUI-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.55.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		01E34C242E21821F003CB0D4 /* IMGLYUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01E34C232E21821F003CB0D4 /* XCRemoteSwiftPackageReference "IMGLYUI-swift" */;
+			productName = IMGLYUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 01E34BCE2E1FE669003CB0D4 /* Project object */;
 }

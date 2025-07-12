@@ -6,19 +6,36 @@
 //
 
 import SwiftUI
+import PhotosUI
+import IMGLYDesignEditor
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+  @StateObject private var viewModel = EditorViewModel()
+  @State private var showingEditor = false
+  
+  var body: some View {
+    VStack(spacing: 20) {
+      PhotosPicker("Choose Image", selection: $viewModel.pickedItem, matching: .images)
+        .onChange(of: viewModel.pickedItem) {
+          Task {
+            if let _ = try? await viewModel.loadPickedImage() {
+              showingEditor = true
+            }
+          }
         }
-        .padding()
+      
+      if viewModel.editedScene != nil {
+        Button("Restore Last Edited") {
+          showingEditor = true
+        }
+      }
     }
+    .sheet(isPresented: $showingEditor) {
+      DesignEditorWrapper(viewModel: viewModel)
+    }
+  }
 }
 
 #Preview {
-    ContentView()
+  ContentView()
 }
