@@ -21,6 +21,7 @@ class EditorViewModel: ObservableObject {
 
   private let scenePersistence: ScenePersistenceProtocol
   private let imageSaver: ImageSaverProtocol
+  private let imagePickerService: ImagePickerServiceProtocol
   private var isExporting = false
   
   let engineSettings = EngineSettings(
@@ -30,20 +31,19 @@ class EditorViewModel: ObservableObject {
   
   init(
     scenePersistence: ScenePersistenceProtocol = DefaultScenePersistenceService(),
-    imageSaver:ImageSaverProtocol = PhotoLibraryService()
+    imageSaver: ImageSaverProtocol = PhotoLibraryService(),
+    imagePickerService: ImagePickerServiceProtocol = DefaultImagePickerService()
   ) {
     self.scenePersistence = scenePersistence
     self.imageSaver = imageSaver
+    self.imagePickerService = imagePickerService
   }
   
-  func loadPickedImage() async throws -> URL? {
-    guard let data = try await pickedItem?.loadTransferable(type: Data.self) else { return nil }
-    let tmpURL = FileManager.default.temporaryDirectory.appendingPathComponent("picked_image.jpg")
-    try data.write(to: tmpURL)
-    pickedImageURL = tmpURL
-    return tmpURL
+  func loadImageFromPickerItem() async throws -> URL? {
+    let url = try await imagePickerService.loadPickedImage(from: pickedItem)
+    pickedImageURL = url
+    return url
   }
-  
   func saveEdited(imageData: Data, sceneString: String) async throws {
     print("🟢 saveEdited started")
     

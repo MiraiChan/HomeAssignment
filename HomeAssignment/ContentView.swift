@@ -18,7 +18,8 @@ struct ContentView: View {
       PhotosPicker("Choose Image", selection: $viewModel.pickedItem, matching: .images)
         .onChange(of: viewModel.pickedItem) { _ in
           Task {
-            if let _ = try? await viewModel.loadPickedImage() {
+            if let url = try? await viewModel.loadImageFromPickerItem() {
+              viewModel.pickedImageURL = url
               viewModel.isRestoring = false
               showingEditor = true
             }
