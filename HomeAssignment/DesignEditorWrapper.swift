@@ -3,7 +3,6 @@
 //  HomeAssignment
 //
 //  Created by Almira Khafizova on 11.07.25.
-//
 import SwiftUI
 import IMGLYDesignEditor
 import IMGLYEngine
@@ -16,12 +15,6 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
     
     let editor = DesignEditor(settings)
       .imgly.onCreate { engine in
-        //        if let bundleURL = Bundle.main.url(forResource: "IMGLYAssets", withExtension: "bundle") {
-        //          print("Bundle URL: \(bundleURL)")
-        //          try await engine.addDefaultAssetSources(baseURL: bundleURL)
-        //        } else {
-        //          print("IMGLYAssets.bundle not found in main bundle!")
-        //        }
         try await engine.addDefaultAssetSources()
         
         if let sceneURL = viewModel.editedScene?.sceneURL {
@@ -42,7 +35,6 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
           try engine.block.appendChild(to: scene, child: page)
         }
       }
-    
       .imgly.onExport { engine, eventHandler in
         guard let scene = try engine.scene.get() else {
           throw NSError(domain: "No scene", code: 0)
@@ -63,28 +55,23 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
         }
       }
     
-    // Обёртка с кнопкой "Закрыть"
-    let controller = UIHostingController(rootView:
-                                          ZStack(alignment: .topLeading) {
-      editor
-      
-      Button(action: {
-        context.coordinator.dismiss()
-      }) {
-        Image(systemName: "xmark.circle.fill")
-          .font(.system(size: 30))
-          .padding()
-          .foregroundColor(.white)
-          .background(Color.black.opacity(0.3))
-          .clipShape(Circle())
-      }
-      .padding()
-    }
-    )
+    // UIHostingController с редактором
+    let editorVC = UIHostingController(rootView: editor)
+    editorVC.navigationItem.title = "Editor"
     
-    let nav = UINavigationController(rootViewController: controller)
+    // Пустой root контроллер для навигации
+    let rootVC = UIViewController()
+    rootVC.view.backgroundColor = .systemBackground
+    
+    // Навигационный контроллер с двумя VC
+    let nav = UINavigationController(rootViewController: rootVC)
+    nav.pushViewController(editorVC, animated: false)
+    
+    nav.delegate = context.coordinator
     nav.modalPresentationStyle = .fullScreen
+    
     context.coordinator.controller = nav
+    
     return nav
   }
   
@@ -94,11 +81,14 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
     Coordinator()
   }
   
-  class Coordinator {
+  class Coordinator: NSObject, UINavigationControllerDelegate {
     weak var controller: UIViewController?
     
-    func dismiss() {
-      controller?.dismiss(animated: true)
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+      // Если показан rootVC, значит Back из редактора
+      if navigationController.viewControllers.count == 1 {
+        controller?.dismiss(animated: true)
+      }
     }
   }
 }
