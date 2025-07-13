@@ -19,7 +19,8 @@ class EditorViewModel: ObservableObject {
   @Published var exportHeight: Int = 4096
   @Published var isRestoring = false
 
-  private let scenePersistence: ScenePersistence
+  private let scenePersistence: ScenePersistenceProtocol
+  private let imageSaver: ImageSaverProtocol
   private var isExporting = false
   
   let engineSettings = EngineSettings(
@@ -27,8 +28,12 @@ class EditorViewModel: ObservableObject {
     userID: "demo-user"
   )
   
-  init(scenePersistence: ScenePersistence = DefaultScenePersistenceService()) {
+  init(
+    scenePersistence: ScenePersistenceProtocol = DefaultScenePersistenceService(),
+    imageSaver:ImageSaverProtocol = PhotoLibraryService()
+  ) {
     self.scenePersistence = scenePersistence
+    self.imageSaver = imageSaver
   }
   
   func loadPickedImage() async throws -> URL? {
@@ -39,21 +44,11 @@ class EditorViewModel: ObservableObject {
     return tmpURL
   }
   
-  func saveImageToGallery(_ imageData: Data) async throws -> String? {
-    var localId: String?
-    try await PHPhotoLibrary.shared().performChanges {
-      let request = PHAssetCreationRequest.forAsset()
-      request.addResource(with: .photo, data: imageData, options: nil)
-      localId = request.placeholderForCreatedAsset?.localIdentifier
-    }
-    return localId
-  }
-  
   func saveEdited(imageData: Data, sceneString: String) async throws {
     print("🟢 saveEdited started")
     
-    guard let localId = try await saveImageToGallery(imageData) else { return }
-    let sceneURL = try scenePersistence.saveSceneString(sceneString) 
+    guard let localId = try await imageSaver.saveImageToGallery(imageData) else { return }
+    let sceneURL = try scenePersistence.saveSceneString(sceneString)
     editedScene = EditedImageSceneModel(assetLocalIdentifier: localId, sceneURL: sceneURL)
     
     print("🟢 saveEdited finished")

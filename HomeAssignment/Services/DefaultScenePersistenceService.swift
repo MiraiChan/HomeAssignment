@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DefaultScenePersistenceService: ScenePersistence {
+struct DefaultScenePersistenceService: ScenePersistenceProtocol {
   func saveSceneString(_ sceneString: String) throws -> URL {
     let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     let sceneURL = docs.appendingPathComponent("\(UUID().uuidString).scene")
