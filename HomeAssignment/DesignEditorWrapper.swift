@@ -69,22 +69,29 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
             
             print("🟢 Calling saveEdited")
             try await viewModel.saveEdited(imageData: data, sceneString: sceneString)
-            print("🟢 saveEdited finished")
             
             let url = FileManager.default.temporaryDirectory.appendingPathComponent("export.png")
             try data.write(to: url)
             print("🟢 Image data written to temp URL: \(url)")
-            
-            try await PHPhotoLibrary.shared().performChanges {
-              let request = PHAssetCreationRequest.forAsset()
-              request.addResource(with: .photo, fileURL: url, options: nil)
-            }
             print("🟢 eventHandler.send finished")
+            
+            await MainActor.run {
+              if let controller = context.coordinator.controller {
+                // Показываем простой алерт вместо UIActivityViewController
+                let alert = UIAlertController(title: nil, message: "Изображение сохранено", preferredStyle: .alert)
+                controller.present(alert, animated: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                  alert.dismiss(animated: true)
+                }
+              }
+            }
+            
           } catch {
             print("❌ Export error: \(error)")
           }
         }
       }
+
     
     let editorVC = UIHostingController(rootView: editor)
     editorVC.navigationItem.title = "Editor"
