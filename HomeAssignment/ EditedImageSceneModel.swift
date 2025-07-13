@@ -8,5 +8,5 @@ import Foundation
 
 struct EditedImageSceneModel: Codable {
   let assetLocalIdentifier: String  // идентификатор изображения в Photos
-  let sceneURL: URL                 // путь к сцене на диске
+  let sceneURL: URL
 }

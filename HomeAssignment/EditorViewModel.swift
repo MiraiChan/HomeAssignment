@@ -38,16 +38,16 @@ class EditorViewModel: ObservableObject {
     return localId
   }
   
-  func saveScene(_ sceneData: Data) throws -> URL {
+  func saveSceneString(_ sceneString: String) throws -> URL {
     let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     let sceneURL = docs.appendingPathComponent("\(UUID().uuidString).scene")
-    try sceneData.write(to: sceneURL)
+    try sceneString.write(to: sceneURL, atomically: true, encoding: .utf8)
     return sceneURL
   }
   
-  func saveEdited(imageData: Data, sceneData: Data) async throws {
+  func saveEdited(imageData: Data, sceneString: String) async throws {
     guard let localId = try await saveImageToGallery(imageData) else { return }
-    let sceneURL = try saveScene(sceneData)
+    let sceneURL = try saveSceneString(sceneString)
     editedScene = EditedImageSceneModel(assetLocalIdentifier: localId, sceneURL: sceneURL)
   }
   

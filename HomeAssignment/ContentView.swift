@@ -30,7 +30,7 @@ struct ContentView: View {
         }
       }
     }
-    .sheet(isPresented: $showingEditor) {
+    .fullScreenCover(isPresented: $showingEditor) {
       DesignEditorWrapper(viewModel: viewModel)
     }
   }
