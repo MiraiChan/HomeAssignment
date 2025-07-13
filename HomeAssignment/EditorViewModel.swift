@@ -19,13 +19,17 @@ class EditorViewModel: ObservableObject {
   @Published var exportHeight: Int = 4096
   @Published var isRestoring = false
 
-  
+  private let scenePersistence: ScenePersistence
   private var isExporting = false
   
   let engineSettings = EngineSettings(
     license: "5w31N62nDi7u0gw_GJij_EfB9db27f1QDUjltWvGopkeqA9A-hnPyIOwJgP70W4p",
     userID: "demo-user"
   )
+  
+  init(scenePersistence: ScenePersistence = DefaultScenePersistenceService()) {
+    self.scenePersistence = scenePersistence
+  }
   
   func loadPickedImage() async throws -> URL? {
     guard let data = try await pickedItem?.loadTransferable(type: Data.self) else { return nil }
@@ -45,18 +49,11 @@ class EditorViewModel: ObservableObject {
     return localId
   }
   
-  func saveSceneString(_ sceneString: String) throws -> URL {
-    let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    let sceneURL = docs.appendingPathComponent("\(UUID().uuidString).scene")
-    try sceneString.write(to: sceneURL, atomically: true, encoding: .utf8)
-    return sceneURL
-  }
-  
   func saveEdited(imageData: Data, sceneString: String) async throws {
     print("🟢 saveEdited started")
     
     guard let localId = try await saveImageToGallery(imageData) else { return }
-    let sceneURL = try saveSceneString(sceneString)
+    let sceneURL = try scenePersistence.saveSceneString(sceneString) 
     editedScene = EditedImageSceneModel(assetLocalIdentifier: localId, sceneURL: sceneURL)
     
     print("🟢 saveEdited finished")
