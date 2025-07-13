@@ -3,9 +3,11 @@
 //  HomeAssignment
 //
 //  Created by Almira Khafizova on 11.07.25.
+
 import SwiftUI
 import IMGLYDesignEditor
 import IMGLYEngine
+import Photos
 
 struct DesignEditorWrapper: UIViewControllerRepresentable {
   @ObservedObject var viewModel: EditorViewModel
@@ -36,43 +38,62 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
         }
       }
       .imgly.onExport { engine, eventHandler in
-        guard let scene = try engine.scene.get() else {
-          throw NSError(domain: "No scene", code: 0)
+        guard viewModel.startExport() else {
+          print("Export skipped: already exporting")
+          return
         }
         
-        let options = ExportOptions(
-          pngCompressionLevel: 3,
-          targetWidth: Float(viewModel.exportWidth),
-          targetHeight: Float(viewModel.exportHeight)
-        )
-        
-        let data = try await engine.block.export(scene, mimeType: .png, options: options)
-        let sceneString = try await engine.scene.saveToString()
-        
-        await MainActor.run {
-          Task {
+        Task {
+          defer { viewModel.finishExport() }
+          
+          do {
+            print("🟢 onExport started")
+            
+            guard let scene = try engine.scene.get() else {
+              throw NSError(domain: "No scene", code: 0)
+            }
+            
+            let options = ExportOptions(
+              pngCompressionLevel: 3,
+              targetWidth: Float(viewModel.exportWidth),
+              targetHeight: Float(viewModel.exportHeight)
+            )
+            
+            let data = try await engine.block.export(scene, mimeType: .png, options: options)
+            let sceneString = try await engine.scene.saveToString()
+            
+            await MainActor.run {
+              print("🟢 Clearing editedScene before saveEdited")
+              viewModel.editedScene = nil
+            }
+            
+            print("🟢 Calling saveEdited")
             try await viewModel.saveEdited(imageData: data, sceneString: sceneString)
+            print("🟢 saveEdited finished")
             
             let url = FileManager.default.temporaryDirectory.appendingPathComponent("export.png")
             try data.write(to: url)
+            print("🟢 Image data written to temp URL: \(url)")
             
-            eventHandler.send(.shareFile(url))
+            try await PHPhotoLibrary.shared().performChanges {
+              let request = PHAssetCreationRequest.forAsset()
+              request.addResource(with: .photo, fileURL: url, options: nil)
+            }
+            print("🟢 eventHandler.send finished")
+          } catch {
+            print("❌ Export error: \(error)")
           }
         }
       }
     
-    // UIHostingController с редактором
     let editorVC = UIHostingController(rootView: editor)
     editorVC.navigationItem.title = "Editor"
     
-    // Пустой root контроллер для навигации
     let rootVC = UIViewController()
     rootVC.view.backgroundColor = .systemBackground
     
-    // Навигационный контроллер с двумя VC
     let nav = UINavigationController(rootViewController: rootVC)
     nav.pushViewController(editorVC, animated: false)
-    
     nav.delegate = context.coordinator
     nav.modalPresentationStyle = .fullScreen
     
