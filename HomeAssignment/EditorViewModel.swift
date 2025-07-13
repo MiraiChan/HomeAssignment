@@ -15,6 +15,10 @@ class EditorViewModel: ObservableObject {
   @Published var pickedImageURL: URL?
   @Published var editedScene: EditedImageSceneModel?
   
+  // Добавляем свойства для размера экспорта
+  @Published var exportWidth: Int = 4096
+  @Published var exportHeight: Int = 4096
+  
   let engineSettings = EngineSettings(
     license: "5w31N62nDi7u0gw_GJij_EfB9db27f1QDUjltWvGopkeqA9A-hnPyIOwJgP70W4p",
     userID: "demo-user"
@@ -59,7 +63,6 @@ class EditorViewModel: ObservableObject {
     }
     guard let page = try engine.block.find(byType: .page).first else {
       print("❌ Ошибка: страница не найдена в сцене")
-      // можно попытаться создать страницу заново:
       let page = try engine.block.create(.page)
       let scene = try engine.scene.get()!
       try engine.block.appendChild(to: scene, child: page)

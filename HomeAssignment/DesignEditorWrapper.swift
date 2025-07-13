@@ -40,7 +40,13 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
           throw NSError(domain: "No scene", code: 0)
         }
         
-        let data = try await engine.block.export(scene, mimeType: .png) { _ in }
+        let options = ExportOptions(
+          pngCompressionLevel: 3,
+          targetWidth: Float(viewModel.exportWidth),
+          targetHeight: Float(viewModel.exportHeight)
+        )
+        
+        let data = try await engine.block.export(scene, mimeType: .png, options: options)
         let sceneString = try await engine.scene.saveToString()
         
         await MainActor.run {
@@ -85,7 +91,6 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
     weak var controller: UIViewController?
     
     func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
-      // Если показан rootVC, значит Back из редактора
       if navigationController.viewControllers.count == 1 {
         controller?.dismiss(animated: true)
       }
