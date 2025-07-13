@@ -17,6 +17,8 @@ class EditorViewModel: ObservableObject {
   
   @Published var exportWidth: Int = 4096
   @Published var exportHeight: Int = 4096
+  @Published var isRestoring = false
+
   
   private var isExporting = false
   

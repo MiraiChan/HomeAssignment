@@ -19,12 +19,13 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
       .imgly.onCreate { engine in
         try await engine.addDefaultAssetSources()
         
-        if let sceneURL = viewModel.editedScene?.sceneURL {
+        if viewModel.isRestoring, let sceneURL = viewModel.editedScene?.sceneURL {
           do {
             let sceneString = try String(contentsOf: sceneURL)
             try await engine.scene.load(from: sceneString)
           } catch {
             print("Ошибка загрузки сцены: \(error)")
+            // fallback: создаём новую сцену
             let scene = try engine.scene.create()
             let page = try engine.block.create(.page)
             try engine.block.appendChild(to: scene, child: page)
@@ -37,9 +38,10 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
           try engine.block.appendChild(to: scene, child: page)
         }
       }
+
       .imgly.onExport { engine, eventHandler in
         guard viewModel.startExport() else {
-          print("Export skipped: already exporting")
+          print("⚠️ Export skipped: already exporting")
           return
         }
         
@@ -62,11 +64,6 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
             let data = try await engine.block.export(scene, mimeType: .png, options: options)
             let sceneString = try await engine.scene.saveToString()
             
-            await MainActor.run {
-              print("🟢 Clearing editedScene before saveEdited")
-              viewModel.editedScene = nil
-            }
-            
             print("🟢 Calling saveEdited")
             try await viewModel.saveEdited(imageData: data, sceneString: sceneString)
             
@@ -76,8 +73,11 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
             print("🟢 eventHandler.send finished")
             
             await MainActor.run {
+              print("🟢 Clearing state after export")
+              viewModel.pickedImageURL = nil
+              viewModel.isRestoring = false
+              
               if let controller = context.coordinator.controller {
-                // Показываем простой алерт вместо UIActivityViewController
                 let alert = UIAlertController(title: nil, message: "Изображение сохранено", preferredStyle: .alert)
                 controller.present(alert, animated: true)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -85,14 +85,11 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
                 }
               }
             }
-            
           } catch {
             print("❌ Export error: \(error)")
           }
         }
       }
-
-    
     let editorVC = UIHostingController(rootView: editor)
     editorVC.navigationItem.title = "Editor"
     

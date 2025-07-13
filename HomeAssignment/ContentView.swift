@@ -16,9 +16,10 @@ struct ContentView: View {
   var body: some View {
     VStack(spacing: 20) {
       PhotosPicker("Choose Image", selection: $viewModel.pickedItem, matching: .images)
-        .onChange(of: viewModel.pickedItem) {
+        .onChange(of: viewModel.pickedItem) { _ in
           Task {
             if let _ = try? await viewModel.loadPickedImage() {
+              viewModel.isRestoring = false
               showingEditor = true
             }
           }
@@ -26,6 +27,7 @@ struct ContentView: View {
       
       if viewModel.editedScene != nil {
         Button("Restore Last Edited") {
+          viewModel.isRestoring = true
           showingEditor = true
         }
       }
