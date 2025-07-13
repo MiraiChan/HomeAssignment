@@ -31,7 +31,7 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
             try engine.block.appendChild(to: scene, child: page)
           }
         } else if let imageURL = viewModel.pickedImageURL {
-          try await viewModel.applyImage(imageURL, in: engine)
+          try await viewModel.applyImageToEngine(imageURL, engine: engine)
         } else {
           let scene = try engine.scene.create()
           let page = try engine.block.create(.page)
