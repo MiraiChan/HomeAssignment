@@ -23,6 +23,8 @@ class EditorViewModel: ObservableObject {
   private let imageSaver: ImageSaverProtocol
   private let imagePickerService: ImagePickerServiceProtocol
   private let sceneBuilder: SceneBuilderProtocol
+  private let sceneRestorationService: SceneRestorationServiceProtocol
+  
   private var isExporting = false
   
   let engineSettings = EngineSettings(
@@ -34,12 +36,14 @@ class EditorViewModel: ObservableObject {
     scenePersistence: ScenePersistenceProtocol = DefaultScenePersistenceService(),
     imageSaver: ImageSaverProtocol = PhotoLibraryService(),
     imagePickerService: ImagePickerServiceProtocol = DefaultImagePickerService(),
-    sceneBuilder: SceneBuilderProtocol = DefaultSceneBuilderService()
+    sceneBuilder: SceneBuilderProtocol = DefaultSceneBuilderService(),
+    sceneRestorationService: SceneRestorationServiceProtocol = DefaultSceneRestorationService()
   ) {
     self.scenePersistence = scenePersistence
     self.imageSaver = imageSaver
     self.imagePickerService = imagePickerService
     self.sceneBuilder = sceneBuilder
+    self.sceneRestorationService = sceneRestorationService
   }
   
   func loadImageFromPickerItem() async throws -> URL? {
@@ -47,19 +51,22 @@ class EditorViewModel: ObservableObject {
     pickedImageURL = url
     return url
   }
+  
   func saveEdited(imageData: Data, sceneString: String) async throws {
-    print("🟢 saveEdited started")
-    
     guard let localId = try await imageSaver.saveImageToGallery(imageData) else { return }
     let sceneURL = try scenePersistence.saveSceneString(sceneString)
     editedScene = EditedImageSceneModel(assetLocalIdentifier: localId, sceneURL: sceneURL)
-    
-    print("🟢 saveEdited finished")
   }
+  
   func applyImageToEngine(_ url: URL, engine: Engine) async throws {
     try await sceneBuilder.applyImage(url, in: engine)
   }
-  // MARK: - Export Lock
+  
+  func restoreSceneIfNeeded(in engine: Engine) async throws {
+    if isRestoring, let sceneURL = editedScene?.sceneURL {
+      try await sceneRestorationService.restoreScene(from: sceneURL, in: engine)
+    }
+  }
   
   func startExport() -> Bool {
     if isExporting {

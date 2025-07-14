@@ -10,8 +10,8 @@ import os.log
 
 struct DefaultSceneBuilderService: SceneBuilderProtocol {
   func applyImage(_ url: URL, in engine: Engine) async throws {
-     if try await engine.scene.get() == nil {
-       let scene = try await engine.scene.create()
+    if try await engine.scene.get() == nil {
+      let scene = try await engine.scene.create()
       let page = try await engine.block.create(.page)
       try await engine.block.appendChild(to: scene, child: page)
     }

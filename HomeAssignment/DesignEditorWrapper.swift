@@ -19,17 +19,9 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
       .imgly.onCreate { engine in
         try await engine.addDefaultAssetSources()
         
-        if viewModel.isRestoring, let sceneURL = viewModel.editedScene?.sceneURL {
-          do {
-            let sceneString = try String(contentsOf: sceneURL)
-            try await engine.scene.load(from: sceneString)
-          } catch {
-            print("Ошибка загрузки сцены: \(error)")
-            // fallback: создаём новую сцену
-            let scene = try engine.scene.create()
-            let page = try engine.block.create(.page)
-            try engine.block.appendChild(to: scene, child: page)
-          }
+        if viewModel.isRestoring {
+          try await viewModel.restoreSceneIfNeeded(in: engine)
+        
         } else if let imageURL = viewModel.pickedImageURL {
           try await viewModel.applyImageToEngine(imageURL, engine: engine)
         } else {
@@ -78,7 +70,7 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
               viewModel.isRestoring = false
               
               if let controller = context.coordinator.controller {
-                let alert = UIAlertController(title: nil, message: "Изображение сохранено", preferredStyle: .alert)
+                let alert = UIAlertController(title: nil, message: "Your image is saved", preferredStyle: .alert)
                 controller.present(alert, animated: true)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                   alert.dismiss(animated: true)
