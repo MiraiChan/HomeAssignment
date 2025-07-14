@@ -6,7 +6,6 @@
 //
 import Foundation
 import IMGLYEngine
-import os.log
 
 struct DefaultSceneBuilderService: SceneBuilderProtocol {
   func applyImage(_ url: URL, in engine: Engine) async throws {

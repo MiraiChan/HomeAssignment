@@ -28,7 +28,7 @@ class EditorViewModel: ObservableObject {
   private var isExporting = false
   
   let engineSettings = EngineSettings(
-    license: "5w31N62nDi7u0gw_GJij_EfB9db27f1QDUjltWvGopkeqA9A-hnPyIOwJgP70W4p",
+    license: "<insert your lisense key>",
     userID: "demo-user"
   )
   
@@ -62,6 +62,12 @@ class EditorViewModel: ObservableObject {
     try await sceneBuilder.applyImage(url, in: engine)
   }
   
+  func createEmptyScene(in engine: Engine) async throws {
+    let scene = try engine.scene.create()
+    let page = try engine.block.create(.page)
+    try engine.block.appendChild(to: scene, child: page)
+  }
+  
   func restoreSceneIfNeeded(in engine: Engine) async throws {
     if isRestoring, let sceneURL = editedScene?.sceneURL {
       try await sceneRestorationService.restoreScene(from: sceneURL, in: engine)
@@ -69,12 +75,9 @@ class EditorViewModel: ObservableObject {
   }
   
   func startExport() -> Bool {
-    if isExporting {
-      return false
-    } else {
-      isExporting = true
-      return true
-    }
+    guard !isExporting else { return false }
+    isExporting = true
+    return true
   }
   
   func finishExport() {

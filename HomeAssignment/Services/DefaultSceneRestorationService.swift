@@ -14,8 +14,7 @@ struct DefaultSceneRestorationService: SceneRestorationServiceProtocol {
       let sceneString = try String(contentsOf: url)
       try await engine.scene.load(from: sceneString)
     } catch {
-      print("Ошибка загрузки сцены: \(error)")
-      // fallback: создаём новую сцену
+      assertionFailure("❌ Failed to load scene: \(error)")
       let scene = try await engine.scene.create()
       let page = try await engine.block.create(.page)
       try await engine.block.appendChild(to: scene, child: page)
