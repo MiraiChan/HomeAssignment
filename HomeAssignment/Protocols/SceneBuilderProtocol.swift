@@ -7,7 +7,7 @@
 
 import Foundation
 import IMGLYEngine
-
+// Protocol for building or updating an editing scene with a new image.
 protocol SceneBuilderProtocol {
   func applyImage(_ url: URL, in engine: Engine) async throws
 }

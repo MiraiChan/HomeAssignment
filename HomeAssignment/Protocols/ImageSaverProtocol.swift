@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+// Protocol defining service for saving image data to device's photo gallery.
 protocol ImageSaverProtocol {
   func saveImageToGallery(_ imageData: Data) async throws -> String?
 }

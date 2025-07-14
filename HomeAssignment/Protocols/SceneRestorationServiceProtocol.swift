@@ -7,7 +7,7 @@
 
 import Foundation
 import IMGLYEngine
-
+// Protocol to restore (load) a saved scene from file into the editing engine.
 protocol SceneRestorationServiceProtocol {
   func restoreScene(from url: URL, in engine: Engine) async throws
 }
