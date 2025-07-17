@@ -18,13 +18,21 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
     
       .imgly.onCreate { engine in
         // Called when editor is created: initialize scene or restore if needed.
-        try await self.handleOnCreate(engine: engine)
+        do {
+          try await self.handleOnCreate(engine: engine)
+        } catch {
+          assertionFailure("❌ Failed to initialize editor: \(error)")
+        }
       }
     
       .imgly.onExport { engine, eventHandler in
         // Called when user exports the image from the editor.
         Task {
-          await self.handleOnExport(engine: engine, context: context)
+          do {
+            try await self.handleOnExport(engine: engine, context: context)
+          } catch {
+            assertionFailure("❌ Export failed: \(error)")
+          }
         }
       }
     // Wrap editor SwiftUI view in UIKit hosting controller for navigation.
@@ -65,7 +73,7 @@ struct DesignEditorWrapper: UIViewControllerRepresentable {
     }
   }
   // Handles export event: saves image and scene, shows confirmation alert.
-  private func handleOnExport(engine: Engine, context: Context) async {
+  private func handleOnExport(engine: Engine, context: Context) async throws {
     guard viewModel.startExport() else {
       // Prevent multiple exports at the same time
       return
