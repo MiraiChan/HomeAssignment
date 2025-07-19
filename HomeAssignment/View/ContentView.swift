@@ -37,7 +37,13 @@ struct ContentView: View {
     }
     // Present the editor in full screen when needed
     .fullScreenCover(isPresented: $showingEditor) {
-      DesignEditorWrapper(viewModel: viewModel)
+      //navigation context for DesignEditor
+      NavigationView {
+        //customizable editor view, built on the basis of DesignEditor
+        EditorView(viewModel: viewModel)
+      }
+      //The CE.SDK requires the DesignEditor to be inside the stack-based NavigationView, otherwise the toolbars will not appear.
+      .navigationViewStyle(.stack)
     }
   }
 }

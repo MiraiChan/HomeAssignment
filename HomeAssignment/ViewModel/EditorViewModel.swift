@@ -85,3 +85,35 @@ class EditorViewModel: ObservableObject {
     isExporting = false
   }
 }
+
+extension EditorViewModel {
+  func onCreate(engine: Engine) async throws {
+    try await engine.addDefaultAssetSources()
+    if isRestoring {
+      try await restoreSceneIfNeeded(in: engine)
+    } else if let url = pickedImageURL {
+      try await applyImageToEngine(url, engine: engine)
+    } else {
+      try await createEmptyScene(in: engine)
+    }
+  }
+  
+  func onExport(engine: Engine) async throws {
+    guard startExport() else { return }
+    defer { finishExport() }
+    
+    guard let scene = try engine.scene.get() else {
+      throw NSError(domain: "No scene", code: 0)
+    }
+    
+    let options = ExportOptions(
+      pngCompressionLevel: 3,
+      targetWidth: Float(exportWidth),
+      targetHeight: Float(exportHeight)
+    )
+    
+    let data = try await engine.block.export(scene, mimeType: .png, options: options)
+    let sceneString = try await engine.scene.saveToString()
+    try await saveEdited(imageData: data, sceneString: sceneString)
+  }
+}
