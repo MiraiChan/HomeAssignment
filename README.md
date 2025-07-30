@@ -1,6 +1,6 @@
 # SwiftUI + IMGLY CE.SDK Image Editor Demo
 
-This is a minimal SwiftUI demo project showcasing integration of [CreativeEngine SDK (CE.SDK)](https://img.ly) using the `IMGLYUI-swift` package.  
+This is a minimal SwiftUI demo project showcasing integration of [CreativeEditor SDK (CE.SDK)](https://img.ly) using the `IMGLYUI-swift` package.  
 It allows users to pick an image, edit it using CE.SDK (apply filters, crop, add elements), and save both the result and the editing scene for future restoration.
 
 ---
