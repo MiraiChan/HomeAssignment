@@ -19,6 +19,8 @@ class EditorViewModel: ObservableObject {
   @Published var exportHeight: Int = 4096         // Export image height
   @Published var isRestoring = false             // Flag to restore last scene
   
+  @Published var didExportSuccessfully = false
+  
   // Services implementing required protocols for modularity and testing
   private let scenePersistence: ScenePersistenceProtocol
   private let imageSaver: ImageSaverProtocol
@@ -88,6 +90,12 @@ class EditorViewModel: ObservableObject {
 
 extension EditorViewModel {
   func onCreate(engine: Engine) async throws {
+//     if let bundleURL = Bundle.main.url(forResource: "IMGLYAssets", withExtension: "bundle") {
+//     print("Bundle URL: \(bundleURL)")
+//     try await engine.addDefaultAssetSources(baseURL: bundleURL)
+//     } else {
+//     print("IMGLYAssets.bundle not found in main bundle!")
+//     }
     try await engine.addDefaultAssetSources()
     if isRestoring {
       try await restoreSceneIfNeeded(in: engine)
@@ -96,6 +104,11 @@ extension EditorViewModel {
     } else {
       try await createEmptyScene(in: engine)
     }
+    //Force loading of resources
+    if let scene = try engine.scene.get() {
+      try await engine.block.forceLoadResources([scene])
+    }
+    //engine.editor.setEditMode(.text)
   }
   
   func onExport(engine: Engine) async throws {
@@ -115,5 +128,7 @@ extension EditorViewModel {
     let data = try await engine.block.export(scene, mimeType: .png, options: options)
     let sceneString = try await engine.scene.saveToString()
     try await saveEdited(imageData: data, sceneString: sceneString)
+    
+    didExportSuccessfully = true
   }
 }

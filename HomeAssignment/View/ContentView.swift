@@ -17,7 +17,7 @@ struct ContentView: View {
     VStack(spacing: 20) {
       // Button to pick a photo from the library
       PhotosPicker("Choose Image", selection: $viewModel.pickedItem, matching: .images)
-        .onChange(of: viewModel.pickedItem) { _ in
+        .onChange(of: viewModel.pickedItem) {
           Task {
             // When image is picked, load it and open editor
             if let url = try? await viewModel.loadImageFromPickerItem() {
